@@ -1,0 +1,22 @@
+{
+  "name": "BagTag",
+  "short_name": "BagTag",
+  "description": "Tag Smart. Search Less.",
+  "start_url": "/bagtag/",
+  "display": "standalone",
+  "background_color": "#F5F6FA",
+  "theme_color": "#00BCD4",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/BagTag-app/bagtag/main/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/BagTag-app/bagtag/main/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
