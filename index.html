@@ -335,7 +335,8 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
 <div id="auth-screen" class="auth-screen">
   <!-- BagTag SVG Logo -->
   <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:8px;">
-    <svg width="120" height="120" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 12px 32px rgba(61,90,254,0.35)) drop-shadow(0 4px 8px rgba(0,0,0,0.15));transform:rotate(-15deg);">
+    <div style="transform:rotate(-20deg);margin-bottom:4px;width:120px;height:120px;">
+    <svg width="120" height="120" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 12px 32px rgba(61,90,254,0.35)) drop-shadow(0 4px 8px rgba(0,0,0,0.15));">
       <defs>
         <!-- Main tag gradient: cyan top-left to purple bottom-right -->
         <linearGradient id="tagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -425,6 +426,7 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
       <!-- Bag dot indicator -->
       <circle cx="151" cy="128" r="5" fill="white" opacity="0.65"/>
     </svg>
+    </div>
     <!-- Wordmark -->
     <div style="display:flex;align-items:baseline;gap:0;margin-top:2px;">
       <span style="font-family:'Nunito',sans-serif;font-size:32px;font-weight:900;color:#1A2456;letter-spacing:-1px;">Bag</span>
@@ -483,7 +485,8 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
 <div id="screen-home" class="screen">
   <div class="home-hdr">
     <div style="display:flex;align-items:center;gap:10px;">
-      <svg width="38" height="38" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(61,90,254,0.32)) drop-shadow(0 2px 4px rgba(0,0,0,0.12));transform:rotate(-15deg);">
+      <div style="transform:rotate(-20deg);width:38px;height:38px;flex-shrink:0;">
+      <svg width="38" height="38" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 3px 10px rgba(61,90,254,0.32)) drop-shadow(0 2px 4px rgba(0,0,0,0.12));">
         <defs>
           <linearGradient id="hTagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:#00E5FF"/>
@@ -544,6 +547,7 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
         <!-- Dot -->
         <circle cx="151" cy="128" r="5" fill="white" opacity="0.65"/>
       </svg>
+      </div>
       <div>
         <div style="display:flex;align-items:baseline;gap:0;">
           <span style="font-family:'Nunito',sans-serif;font-size:26px;font-weight:900;color:var(--text);letter-spacing:-0.5px;">Bag</span>
@@ -799,13 +803,16 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
     </div>
     <div class="form-group">
       <label class="form-lbl" data-i18n="photo_video">Photo or video</label>
-      <div id="edit-media-current" style="display:none;margin-bottom:10px;"></div>
+      <div id="edit-media-current" style="display:none;margin-bottom:10px;position:relative;">
+        <div id="edit-media-current-img" style="width:100%;max-height:220px;object-fit:cover;border-radius:10px;overflow:hidden;"></div>
+        <button id="btn-remove-photo" onclick="removeEditPhoto()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:white;border:none;border-radius:99px;padding:4px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px;">✕ Remove photo</button>
+      </div>
       <div class="media-area" id="edit-media-area">
         <div class="media-icon">📷</div>
         <div data-i18n="tap_to_change">Tap to change photo</div>
         <div class="media-sub" data-i18n="photo_from_gallery">Photo or video from camera or gallery</div>
       </div>
-      <input type="file" id="edit-media-file" accept="image/*,video/*" capture="environment" style="display:none;"/>
+      <input type="file" id="edit-media-file" accept="image/*,video/*" style="display:none;"/>
       <div id="edit-media-preview" style="display:none;margin-top:10px;"></div>
     </div>
     <div class="btn-row">
@@ -5072,22 +5079,37 @@ function openEditItem(itemId){
   const item=bag.items.find(i=>i.id===itemId);
   if(!item)return;
   curEditItemId=itemId;
-  editMedia={data:null,type:null,file:null};
+  editMedia={data:null,type:null,file:null,removed:false};
   document.getElementById('edit-item-name').value=item.name;
   document.getElementById('edit-item-note').value=item.note||'';
   const cur=document.getElementById('edit-media-current');
+  const curImg=document.getElementById('edit-media-current-img');
   if(item.mediaUrl||item.mediaData){
     cur.style.display='';
-    cur.innerHTML=item.mediaType==='video'
+    curImg.innerHTML=item.mediaType==='video'
       ?`<video src="${item.mediaUrl||item.mediaData}" controls style="width:100%;max-height:180px;border-radius:10px;display:block;"></video>`
       :`<img src="${item.mediaUrl||item.mediaData}" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px;display:block;"/>`;
-  }else{cur.style.display='none';cur.innerHTML='';}
+    document.getElementById('edit-media-area').style.display='none';
+  }else{
+    cur.style.display='none';
+    curImg.innerHTML='';
+    document.getElementById('edit-media-area').style.display='';
+  }
   document.getElementById('edit-media-preview').style.display='none';
   document.getElementById('edit-media-preview').innerHTML='';
-  document.getElementById('edit-media-area').style.display='';
   document.getElementById('edit-media-file').value='';
   go('edit-item');
   setTimeout(()=>document.getElementById('edit-item-name').focus(),300);
+}
+
+function removeEditPhoto(){
+  editMedia.removed=true;
+  editMedia.data=null;editMedia.file=null;editMedia.type=null;
+  const cur=document.getElementById('edit-media-current');
+  cur.style.display='none';
+  document.getElementById('edit-media-current-img').innerHTML='';
+  document.getElementById('edit-media-area').style.display='';
+  toast('Photo removed — save to confirm');
 }
 document.getElementById('back-edit-item').addEventListener('click',()=>{renderItems();go('bag-detail');});
 document.getElementById('btn-cancel-edit-item').addEventListener('click',()=>{renderItems();go('bag-detail');});
@@ -5131,7 +5153,13 @@ document.getElementById('btn-save-edit-item').addEventListener('click',async()=>
   btn.disabled=true;btn.textContent='Saving…';
   item.name=name;
   item.note=document.getElementById('edit-item-note').value.trim();
-  if(editMedia.file){
+  // Handle photo removal
+  if(editMedia.removed){
+    if(item.mediaPath&&currentUser){
+      try{await sb.storage.from('media').remove([item.mediaPath]);}catch(e){}
+    }
+    item.mediaPath=null;item.mediaData=null;item.mediaUrl=null;item.mediaType=null;item.mediaPaths=null;
+  } else if(editMedia.file){
     if(currentUser){
       try{
         toast('Uploading photo…');
