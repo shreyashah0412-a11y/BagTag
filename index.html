@@ -1222,15 +1222,7 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
 <!-- jsQR for scanning -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <!-- QRCode generation lib -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-<script>
-// Wrap QRCode library under the name QRCodeLib expected by the app
-window.addEventListener('load', function() {
-  if(typeof QRCode !== 'undefined' && !window.QRCodeLib) {
-    window.QRCodeLib = QRCode;
-  }
-});
-</script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" onload="window.QRCodeLib=window.QRCode||QRCode;"></script>
 <script>
 // ── SUPABASE CONFIG ──
 const SUPABASE_URL = 'https://aheupbkmjtkdjvclxxrf.supabase.co';
