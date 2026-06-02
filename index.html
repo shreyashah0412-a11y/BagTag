@@ -1560,7 +1560,7 @@ async function onSignedIn(){
   hideAuthScreen();
   document.getElementById('acct-email-label').textContent=currentUser.email||'';
   // Show admin link if admin
-  if(currentUser.email===ADMIN_EMAIL) document.getElementById('admin-link-row').style.display='';
+  if(currentUser.email&&currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()) document.getElementById('admin-link-row').style.display='';
   await syncFromCloud();
   await fetchProStatus();
   refreshProScreens();
@@ -2196,7 +2196,7 @@ document.getElementById('back-admin').addEventListener('click',()=>{renderHome()
 document.getElementById('admin-search-inp').addEventListener('input',e=>filterAdminUsers(e.target.value));
 
 async function loadAdminData(){
-  if(!currentUser||currentUser.email!==ADMIN_EMAIL){toast('Access denied');return;}
+  if(!currentUser||currentUser.email.toLowerCase()!==ADMIN_EMAIL.toLowerCase()){toast('Access denied');return;}
   const listEl=document.getElementById('admin-user-list');
   const statsEl=document.getElementById('admin-stats');
   listEl.innerHTML='<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">Loading…</div>';
@@ -2267,7 +2267,7 @@ window.adminRevokeAccess=async function(userId){
   if(session){
     currentUser=session.user;
     document.getElementById('acct-email-label').textContent=currentUser.email||'';
-    if(currentUser.email===ADMIN_EMAIL) document.getElementById('admin-link-row').style.display='';
+    if(currentUser.email&&currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()) document.getElementById('admin-link-row').style.display='';
     await syncFromCloud();
     await fetchProStatus();
     refreshProScreens();
