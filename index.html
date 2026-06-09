@@ -308,6 +308,33 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
 .trial-banner{background:linear-gradient(135deg,#FFF3CD,#FFE8A3);border:1px solid #F59E0B;border-radius:var(--rsm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
 .trial-banner-text{flex:1;font-size:12px;color:#B45309;line-height:1.4;}
 .trial-banner-title{font-weight:800;font-size:13px;color:#92400E;margin-bottom:2px;}
+
+/* ── WELCOME GREETING ── */
+.welcome-greeting{font-size:13px;color:var(--text2);font-family:var(--mono);margin-top:2px;letter-spacing:0.01em;}
+.welcome-greeting span{color:var(--accent);font-weight:700;}
+
+/* ── QUICK NOTES ── */
+.qnote-card{display:flex;align-items:flex-start;gap:10px;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:9px;}
+.qnote-dot{width:10px;height:10px;min-width:10px;border-radius:50%;margin-top:4px;}
+.qnote-text{flex:1;font-size:13px;color:var(--text);line-height:1.5;word-break:break-word;}
+.qnote-del{width:30px;min-width:30px;height:30px;border:none;background:none;display:flex;align-items:center;justify-content:center;border-radius:6px;color:var(--text3);font-size:16px;cursor:pointer;flex-shrink:0;}
+.qnote-del:active{background:var(--surface2);}
+.qnote-add-row{display:flex;gap:8px;align-items:flex-start;margin-top:8px;}
+.qnote-inp{flex:1;padding:11px 13px;border:0.5px solid var(--border2);border-radius:var(--rsm);font-size:14px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none;resize:none;line-height:1.4;min-height:42px;}
+.qnote-inp:focus{border-color:var(--accent);}
+.qnote-save-btn{padding:11px 16px;background:var(--grad-btn);color:white;border:none;border-radius:var(--rsm);font-family:var(--font);font-size:13px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.qnote-colors{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.qnote-color-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .12s;}
+.qnote-color-dot.sel{border-color:var(--text);transform:scale(1.15);}
+.qnote-empty{font-size:12px;color:var(--text3);font-family:var(--mono);padding:4px 0 8px;}
+
+/* ── ACCOUNT NAME INPUT ── */
+.acct-name-row{margin-bottom:14px;}
+.acct-name-lbl{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);font-family:var(--mono);margin-bottom:6px;display:block;}
+.acct-name-inp-row{display:flex;gap:8px;}
+.acct-name-inp{flex:1;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--rsm);font-size:14px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none;}
+.acct-name-inp:focus{border-color:var(--accent);}
+.acct-name-save{padding:10px 14px;background:var(--accent);color:white;border:none;border-radius:var(--rsm);font-family:var(--font);font-size:13px;font-weight:700;white-space:nowrap;}
 .trial-upgrade-btn{background:#F59E0B;color:white;border:none;border-radius:99px;padding:7px 14px;font-family:var(--font);font-size:12px;font-weight:700;flex-shrink:0;cursor:pointer;}
 
 /* ── SCAN HISTORY ── */
@@ -466,6 +493,13 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
 <div class="acct-sheet" id="acct-sheet">
   <div style="font-size:15px;font-weight:700;margin-bottom:4px;font-family:'Nunito',sans-serif;">Account</div>
   <div class="acct-email" id="acct-email-label"></div>
+  <div class="acct-name-row">
+    <span class="acct-name-lbl">Your display name</span>
+    <div class="acct-name-inp-row">
+      <input class="acct-name-inp" id="acct-name-inp" type="text" placeholder="e.g. Shreya" maxlength="40"/>
+      <button class="acct-name-save" id="btn-save-display-name">Save</button>
+    </div>
+  </div>
   <div id="acct-plan-row" style="margin:10px 0 14px;">
     <div id="acct-plan-badge" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;"></div>
     <div id="acct-plan-sub" style="font-size:11px;color:var(--text3);margin-top:5px;"></div>
@@ -473,6 +507,9 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
   </div>
   <div style="margin:0 0 10px;">
     <button class="tnc-link" id="btn-view-tnc">📋 View Terms &amp; Conditions</button>
+  </div>
+  <div style="margin:0 0 10px;">
+    <button class="tnc-link" id="btn-change-password" style="color:var(--text2);">🔑 Change Password</button>
   </div>
   <div id="admin-link-row" style="display:none;margin:0 0 14px;">
     <button onclick="go('admin');document.getElementById('acct-sheet').classList.remove('open');" style="background:none;border:none;color:#9C27B0;font-size:13px;font-family:var(--font);font-weight:700;cursor:pointer;">🔐 Admin Dashboard</button>
@@ -516,6 +553,7 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
           <span style="font-family:'Nunito',sans-serif;font-size:26px;font-weight:900;background:linear-gradient(135deg,#00BCD4,#3D5AFE,#9C27B0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px;">Tag</span>
         </div>
         <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,#00BCD4,#3D5AFE,#9C27B0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:1px;">Tag Smart. Search Less.</div>
+        <div class="welcome-greeting" id="welcome-greeting" style="display:none;">Welcome, <span id="welcome-name"></span> 👋</div>
       </div>
     </div>
     <div class="home-acts">
@@ -547,7 +585,7 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
   <div class="search-wrap">
     <div class="search-box">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input class="search-inp" id="search-inp" type="text" placeholder="Search bags and items…" autocomplete="off"/>
+      <input class="search-inp" id="search-inp" type="text" placeholder="Search bags, items &amp; notes…" autocomplete="off"/>
       <button class="search-clear" id="search-clear">✕</button>
     </div>
   </div>
@@ -582,6 +620,20 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
     </div>
     <div id="loose-list"></div>
     <div id="loose-empty" style="font-size:12px;color:var(--text3);font-family:var(--mono);padding:4px 0 12px;display:none;">No bags outside folders.</div>
+
+    <!-- QUICK NOTES -->
+    <div class="sec-row" style="margin-top:8px;">
+      <div class="sec-lbl">📝 Quick Notes</div>
+    </div>
+    <div id="qnote-list"></div>
+    <div id="qnote-empty" class="qnote-empty" style="display:none;">No quick notes yet. Add one below.</div>
+    <div style="margin-bottom:10px;">
+      <textarea class="qnote-inp" id="qnote-inp" rows="2" placeholder="e.g. Dmart bill → pink basket on fridge"></textarea>
+      <div class="qnote-colors" id="qnote-color-picker"></div>
+      <div style="margin-top:8px;">
+        <button class="qnote-save-btn" id="btn-save-qnote">+ Add Note</button>
+      </div>
+    </div>
   </div>
   <button class="fab" id="btn-fab">
     <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
@@ -1178,6 +1230,7 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
       <div class="onboard-dot active"></div>
       <div class="onboard-dot"></div>
       <div class="onboard-dot"></div>
+      <div class="onboard-dot"></div>
     </div>
     <div class="onboard-step active" id="onboard-1">
       <div class="onboard-img">📁</div>
@@ -1196,6 +1249,12 @@ textarea{min-height:80px;resize:vertical;line-height:1.5;}
       <div class="onboard-num">3</div>
       <div class="onboard-title">Print &amp; stick the QR label</div>
       <div class="onboard-sub">Open any bag, tap "QR Label" and print it. Stick it on the bag. From now on, anyone in your school just scans it with their phone to see everything inside — instantly. No app needed.</div>
+    </div>
+    <div class="onboard-step" id="onboard-4">
+      <div class="onboard-img">📝</div>
+      <div class="onboard-num">4</div>
+      <div class="onboard-title">Quick Notes for fast reminders</div>
+      <div class="onboard-sub">No time to create a bag? Just drop a Quick Note — like "Dmart bill → pink basket on fridge". Find it instantly with search. Tap ✕ to delete when done.</div>
     </div>
     <div class="onboard-acts">
       <button class="btn btn-s" id="btn-onboard-skip" style="flex:1" onclick="closeOnboarding()">Skip</button>
@@ -1307,6 +1366,9 @@ let selFolderEmoji='📁', selFolderColor=COLORS_PALETTE[0].hex;
 let selBagEmoji='🧳', selBagColor=COLORS_PALETTE[0].hex;
 let selEditBagEmoji='🧳', selEditBagColor=COLORS_PALETTE[0].hex;
 let onboardStep = 1;
+let userDisplayName = '';
+let quickNotes = [];
+let selNoteColor = '#3D5AFE';
 
 // ── UTILS ──
 function toast(msg) {
@@ -1397,7 +1459,7 @@ function closeOnboarding() {
   localStorage.setItem('bagtag_onboarded','1');
 }
 window.nextOnboardStep = function() {
-  if(onboardStep >= 3){closeOnboarding();return;}
+  if(onboardStep >= 4){closeOnboarding();return;}
   onboardStep++;
   updateOnboardStep();
 };
@@ -1410,7 +1472,7 @@ function updateOnboardStep() {
     d.style.width = i===onboardStep-1 ? '20px' : '8px';
   });
   const btn = document.getElementById('btn-onboard-next');
-  if(btn) btn.textContent = onboardStep===3 ? 'Get Started 🎉' : 'Next →';
+  if(btn) btn.textContent = onboardStep===4 ? 'Get Started 🎉' : 'Next →';
 }
 
 // ── PWA INSTALL ──
@@ -1493,13 +1555,21 @@ function doSearch(q){
     const matchedItems=bag.items.filter(i=>i.name.toLowerCase().includes(q)||(i.note||'').toLowerCase().includes(q));
     if(bagMatch||matchedItems.length) hits.push({bag,bagMatch,items:matchedItems});
   });
-  if(!hits.length){searchPane.innerHTML=`<div class="search-no-results">🔍 No results found for "<strong>${esc(q)}</strong>"</div>`;return;}
-  let html=`<div class="search-results-lbl">Search results (${hits.reduce((a,h)=>a+(h.bagMatch?1:0)+h.items.length,0)})</div>`;
+  // Quick notes search
+  const noteHits=quickNotes.filter(n=>n.text.toLowerCase().includes(q));
+  if(!hits.length&&!noteHits.length){searchPane.innerHTML=`<div class="search-no-results">🔍 No results found for "<strong>${esc(q)}</strong>"</div>`;return;}
+  let html='';
+  const totalCount=hits.reduce((a,h)=>a+(h.bagMatch?1:0)+h.items.length,0)+noteHits.length;
+  html+=`<div class="search-results-lbl">Search results (${totalCount})</div>`;
   hits.forEach(({bag,bagMatch,items})=>{
     const folder=getFolderForBag(bag.id);
     if(bagMatch){html+=`<div class="bag-card" onclick="openBag('${bag.id}');clearSearch()"><div class="bag-emo">${bag.emoji||'🧳'}</div><div class="bag-meta"><div class="bag-name">${esc(bag.name)}</div><div class="bag-sub">${folder?'📁 '+esc(folder.name)+' · ':''}${bag.items.length} items${bag.location?' · 📍'+esc(bag.location):''}</div></div></div>`;}
     if(items.length){html+=`<div class="search-hit-bag">${bag.emoji||'🧳'} ${esc(bag.name)}</div>`;items.forEach(item=>{html+=`<div class="item-card" onclick="openBag('${bag.id}');clearSearch()" style="cursor:pointer"><div class="item-thumb">${thumb(item)}</div><div class="item-body"><div class="item-name">${esc(item.name)}</div>${item.note?`<div class="item-note">${esc(item.note)}</div>`:''}</div></div>`;});}
   });
+  if(noteHits.length){
+    html+=`<div class="search-hit-bag">📝 Quick Notes</div>`;
+    noteHits.forEach(n=>{html+=`<div class="qnote-card"><div class="qnote-dot" style="background:${n.colour||'#3D5AFE'}"></div><div class="qnote-text">${esc(n.text)}</div><button class="qnote-del" onclick="deleteNote('${n.id}');clearSearch()">✕</button></div>`;});
+  }
   searchPane.innerHTML=html;
 }
 function clearSearch(){searchInp.value='';searchClear.style.display='none';searchPane.style.display='none';homeScroll.style.display='';}
@@ -1555,6 +1625,8 @@ async function onSignedIn(){
   if(currentUser.email&&currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()) document.getElementById('admin-link-row').style.display='';
   await syncFromCloud();
   await fetchProStatus();
+  await fetchDisplayName();
+  await loadQuickNotes();
   refreshProScreens();
   checkTnCAfterLogin();
   updateTrialBanner();
@@ -1571,6 +1643,22 @@ document.getElementById('btn-sign-out').addEventListener('click',async()=>{
 });
 document.getElementById('btn-acct-open').addEventListener('click',()=>document.getElementById('acct-sheet').classList.add('open'));
 document.getElementById('btn-acct-close').addEventListener('click',()=>document.getElementById('acct-sheet').classList.remove('open'));
+
+// ── CHANGE PASSWORD ──
+document.getElementById('btn-change-password').addEventListener('click', async()=>{
+  if(!currentUser||!currentUser.email){toast('Not signed in.');return;}
+  const btn=document.getElementById('btn-change-password');
+  btn.textContent='Sending…';
+  try{
+    const{error}=await sb.auth.resetPasswordForEmail(currentUser.email,{redirectTo:window.location.href});
+    if(error){toast('Error: '+error.message);}
+    else{
+      document.getElementById('acct-sheet').classList.remove('open');
+      toast('📧 Password reset email sent to '+currentUser.email);
+    }
+  }catch(e){toast('Could not send reset email.');}
+  btn.textContent='🔑 Change Password';
+});
 
 // ── CLOUD SYNC ──
 async function syncFromCloud(){
@@ -1682,6 +1770,117 @@ function renderHome(){
       </div>`).join('');
   }
 }
+
+// ── WELCOME NAME ──
+function applyDisplayName(name){
+  userDisplayName = name||'';
+  const greet = document.getElementById('welcome-greeting');
+  const nameEl = document.getElementById('welcome-name');
+  const inp = document.getElementById('acct-name-inp');
+  if(userDisplayName){
+    nameEl.textContent = userDisplayName;
+    greet.style.display = '';
+    if(inp) inp.value = userDisplayName;
+  } else {
+    greet.style.display = 'none';
+    if(inp) inp.value = '';
+  }
+}
+async function fetchDisplayName(){
+  if(!currentUser) return;
+  try{
+    const{data,error}=await sb.from('user_profiles').select('display_name').eq('id',currentUser.id).single();
+    if(!error && data) applyDisplayName(data.display_name||'');
+  }catch(e){}
+}
+async function saveDisplayName(){
+  const inp = document.getElementById('acct-name-inp');
+  const name = (inp.value||'').trim();
+  if(!name){toast('Please enter a name.');return;}
+  try{
+    await sb.from('user_profiles').upsert({id:currentUser.id,display_name:name},{onConflict:'id'});
+    applyDisplayName(name);
+    document.getElementById('acct-sheet').classList.remove('open');
+    toast('✅ Name saved!');
+  }catch(e){toast('Could not save name.');}
+}
+document.getElementById('btn-save-display-name').addEventListener('click', saveDisplayName);
+document.getElementById('acct-name-inp').addEventListener('keydown', e=>{if(e.key==='Enter'){e.preventDefault();saveDisplayName();}});
+
+// ── QUICK NOTES ──
+const NOTE_COLORS = ['#3D5AFE','#E8620A','#1A7A4A','#9C27B0','#E91E63','#00BCD4','#F59E0B','#64748b'];
+
+function buildNoteColorPicker(){
+  const el = document.getElementById('qnote-color-picker'); if(!el) return;
+  el.innerHTML = NOTE_COLORS.map(c=>`<div class="qnote-color-dot${c===selNoteColor?' sel':''}" style="background:${c}" onclick="pickNoteColor('${c}')"></div>`).join('');
+}
+window.pickNoteColor = function(c){ selNoteColor=c; buildNoteColorPicker(); };
+
+async function loadQuickNotes(){
+  if(!currentUser) return;
+  try{
+    const{data,error}=await sb.from('quick_notes').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+    if(!error){ quickNotes=data||[]; renderQuickNotes(); }
+  }catch(e){}
+}
+function renderQuickNotes(){
+  const list=document.getElementById('qnote-list');
+  const empty=document.getElementById('qnote-empty');
+  if(!quickNotes.length){list.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  list.innerHTML=quickNotes.map(n=>`
+    <div class="qnote-card" id="qnote-${n.id}">
+      <div class="qnote-dot" style="background:${n.colour||'#3D5AFE'}"></div>
+      <div class="qnote-text" onclick="startEditNote('${n.id}')" style="cursor:pointer;" title="Tap to edit">${esc(n.text)}</div>
+      <button class="qnote-del" onclick="deleteNote('${n.id}')" title="Delete">✕</button>
+    </div>`).join('');
+}
+window.startEditNote = function(id){
+  const note = quickNotes.find(n=>n.id===id); if(!note) return;
+  const card = document.getElementById('qnote-'+id); if(!card) return;
+  card.innerHTML=`
+    <div class="qnote-dot" style="background:${note.colour||'#3D5AFE'}"></div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+      <textarea class="qnote-inp" id="qnote-edit-inp-${id}" style="min-height:38px;">${note.text.replace(/</g,'&lt;')}</textarea>
+      <div style="display:flex;gap:6px;">
+        <button class="qnote-save-btn" style="flex:1;padding:8px;" onclick="saveEditNote('${id}')">Save</button>
+        <button class="btn btn-s" style="flex:1;padding:8px;font-size:13px;" onclick="renderQuickNotes()">Cancel</button>
+      </div>
+    </div>`;
+  const ta=document.getElementById('qnote-edit-inp-'+id);
+  if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}
+};
+window.saveEditNote = async function(id){
+  const ta=document.getElementById('qnote-edit-inp-'+id);
+  const text=(ta?ta.value:'').trim();
+  if(!text){toast('Note cannot be empty.');return;}
+  const note=quickNotes.find(n=>n.id===id); if(!note) return;
+  note.text=text;
+  renderQuickNotes();
+  try{ await sb.from('quick_notes').update({text}).eq('id',id); }catch(e){}
+  toast('✅ Note updated!');
+};
+window.deleteNote = async function(id){
+  quickNotes=quickNotes.filter(n=>n.id!==id);
+  renderQuickNotes();
+  try{ await sb.from('quick_notes').delete().eq('id',id); }catch(e){}
+};
+async function saveQuickNote(){
+  const inp=document.getElementById('qnote-inp');
+  const text=(inp.value||'').trim();
+  if(!text){toast('Please type a note first.');return;}
+  const note={id:'tmp_'+Date.now(),text,colour:selNoteColor,user_id:currentUser.id,created_at:new Date().toISOString()};
+  quickNotes.unshift(note);
+  renderQuickNotes();
+  inp.value='';
+  try{
+    const{data,error}=await sb.from('quick_notes').insert({text,colour:selNoteColor,user_id:currentUser.id}).select('id').single();
+    if(!error && data){ note.id=data.id; }
+  }catch(e){ toast('Note saved locally only.'); }
+}
+document.getElementById('btn-save-qnote').addEventListener('click', saveQuickNote);
+document.getElementById('qnote-inp').addEventListener('keydown', e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();saveQuickNote();} });
+buildNoteColorPicker();
 
 // ── FOLDERS ──
 function openFolder(id){curFolder=id;const f=db.folders.find(x=>x.id===id);document.getElementById('folder-detail-name').textContent=(f.emoji||'📁')+' '+f.name;renderFolderBags();go('folder-detail');}
@@ -2262,6 +2461,8 @@ window.adminRevokeAccess=async function(userId){
     if(currentUser.email&&currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()) document.getElementById('admin-link-row').style.display='';
     await syncFromCloud();
     await fetchProStatus();
+    await fetchDisplayName();
+    await loadQuickNotes();
     refreshProScreens();
     updateTrialBanner();
     renderScanHistory();
