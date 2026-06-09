@@ -1829,28 +1829,38 @@ function renderQuickNotes(){
   if(!quickNotes.length){list.innerHTML='';empty.style.display='';return;}
   empty.style.display='none';
   list.innerHTML=quickNotes.map(n=>`
-    <div class="qnote-card" id="qnote-${n.id}">
+    <div class="qnote-card" id="qnote-${n.id}" data-noteid="${n.id}">
       <div class="qnote-dot" style="background:${n.colour||'#3D5AFE'}"></div>
-      <div class="qnote-text" onclick="startEditNote('${n.id}')" style="cursor:pointer;" title="Tap to edit">${esc(n.text)}</div>
-      <button class="qnote-del" onclick="deleteNote('${n.id}')" title="Delete">✕</button>
+      <div class="qnote-text" data-action="edit" data-noteid="${n.id}" style="cursor:pointer;" title="Tap to edit">${esc(n.text)}</div>
+      <button class="qnote-del" data-action="delete" data-noteid="${n.id}" title="Delete">✕</button>
     </div>`).join('');
 }
-window.startEditNote = function(id){
+
+// Event delegation — handles both edit and delete taps reliably on mobile
+document.getElementById('qnote-list').addEventListener('click', function(e){
+  const target = e.target.closest('[data-action]');
+  if(!target) return;
+  const id = target.dataset.noteid;
+  if(target.dataset.action==='delete') deleteNote(id);
+  else if(target.dataset.action==='edit') startEditNote(id);
+});
+
+function startEditNote(id){
   const note = quickNotes.find(n=>n.id===id); if(!note) return;
   const card = document.getElementById('qnote-'+id); if(!card) return;
   card.innerHTML=`
     <div class="qnote-dot" style="background:${note.colour||'#3D5AFE'}"></div>
     <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
-      <textarea class="qnote-inp" id="qnote-edit-inp-${id}" style="min-height:38px;">${note.text.replace(/</g,'&lt;')}</textarea>
+      <textarea class="qnote-inp" id="qnote-edit-inp-${id}" style="min-height:38px;">${note.text.replace(/</g,'&lt;').replace(/"/g,'&quot;')}</textarea>
       <div style="display:flex;gap:6px;">
-        <button class="qnote-save-btn" style="flex:1;padding:8px;" onclick="saveEditNote('${id}')">Save</button>
-        <button class="btn btn-s" style="flex:1;padding:8px;font-size:13px;" onclick="renderQuickNotes()">Cancel</button>
+        <button class="qnote-save-btn" data-action="save-edit" data-noteid="${id}" style="flex:1;padding:8px;">Save</button>
+        <button class="btn btn-s" data-action="cancel-edit" style="flex:1;padding:8px;font-size:13px;">Cancel</button>
       </div>
     </div>`;
   const ta=document.getElementById('qnote-edit-inp-'+id);
   if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}
-};
-window.saveEditNote = async function(id){
+}
+async function saveEditNote(id){
   const ta=document.getElementById('qnote-edit-inp-'+id);
   const text=(ta?ta.value:'').trim();
   if(!text){toast('Note cannot be empty.');return;}
@@ -1859,12 +1869,21 @@ window.saveEditNote = async function(id){
   renderQuickNotes();
   try{ await sb.from('quick_notes').update({text}).eq('id',id); }catch(e){}
   toast('✅ Note updated!');
-};
+}
+
+// Handle save-edit and cancel-edit via delegation on the list too
+document.getElementById('qnote-list').addEventListener('click', function(e){
+  const target = e.target.closest('[data-action="save-edit"],[data-action="cancel-edit"]');
+  if(!target) return;
+  if(target.dataset.action==='save-edit') saveEditNote(target.dataset.noteid);
+  else if(target.dataset.action==='cancel-edit') renderQuickNotes();
+});
 window.deleteNote = async function(id){
   quickNotes=quickNotes.filter(n=>n.id!==id);
   renderQuickNotes();
   try{ await sb.from('quick_notes').delete().eq('id',id); }catch(e){}
 };
+function deleteNote(id){ window.deleteNote(id); }
 async function saveQuickNote(){
   const inp=document.getElementById('qnote-inp');
   const text=(inp.value||'').trim();
